@@ -1,0 +1,27 @@
+services:
+  go_auth:
+      container_name: go_auth
+      image: go_auth:1.0.0
+      build:
+        context: ./backend
+        dockerfile: go.dockerfile
+      ports:
+        - 8000:8000
+      depends_on:
+        - db_mysql
+  db_mysql:
+      container_name: db_mysql
+      image: mysql:8.0
+      environment:
+        MYSQL_ROOT_PASSWORD: rootroot
+        MYSQL_DATABASE: go_auth
+        MYSQL_USER: myuser
+        MYSQL_PASSWORD: rootroot
+      command: --default-authentication-plugin=mysql_native_password --bind-address=0.0.0.0
+      ports:
+        - 3306:3306
+      volumes:
+        - mysqldata:/var/lib/mysql
+
+volumes:
+    mysqldata: {}
