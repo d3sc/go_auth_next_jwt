@@ -14,6 +14,19 @@ export function Login() {
   const [error, setError] = React.useState(""); // State for error message
   const router = useRouter();
 
+  React.useEffect(() => {
+    const run = async () => {
+      const response = await fetch("http://localhost:8000/api/user", {
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        await router.push("/");
+      }
+    };
+    run();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 

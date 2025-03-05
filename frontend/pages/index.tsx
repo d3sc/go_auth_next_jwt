@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 import React from "react";
 import {
   Card,
@@ -22,15 +21,22 @@ export function index() {
     name: string;
     email: string;
   } | null>(null);
-  useEffect(() => {
-    const run = async () => {
-      const response = await fetch("http://localhost:8000/api/user", {
-        credentials: "include",
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data);
+  React.useEffect(() => {
+    const run = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/user", {
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        setUser(null);
       }
     };
     run();
@@ -58,10 +64,10 @@ export function index() {
         </CardHeader>
         <CardContent className="flex justify-evenly">
           <Link href="/auth/register">
-            <Button>Register</Button>
+            <Button className="cursor-pointer">Register</Button>
           </Link>
           <Link href="/auth/login">
-            <Button>Login</Button>
+            <Button className="cursor-pointer">Login</Button>
           </Link>
         </CardContent>
         <CardFooter className="flex justify-end"></CardFooter>
@@ -73,7 +79,11 @@ export function index() {
             <AlertDescription>{user.email}</AlertDescription>
 
             <div>
-              <Button variant={"secondary"} onClick={logoutHandler}>
+              <Button
+                variant={"secondary"}
+                onClick={logoutHandler}
+                className="cursor-pointer"
+              >
                 Logout
               </Button>
             </div>
