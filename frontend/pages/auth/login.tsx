@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from "next/router";
 
 export function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState(""); // State for error message
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,11 +29,12 @@ export function Login() {
       },
       credentials: "include",
       body: JSON.stringify({ email, password }),
-    }).then((res) => {
+    }).then(async (res) => {
       if (!res.ok) {
         setError("Invalid email or password");
       } else {
         setError("");
+        await router.push("/");
       }
     });
   };
